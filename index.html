@@ -1,0 +1,196 @@
+<html>
+    <head>
+        <title>XO Game</title>
+        <link rel="stylesheet" href="style.css">
+        <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+    </head>
+    <body>
+        <img onclick='refresh(event)' src="R.png" id="Ref">
+        <div class="containe" id="Container">
+            <table >
+                <tr>
+                    <td onclick='tdclick(event)' id="Cell 1" class="b_Bottom b_Right"></td>
+                    <td onclick='tdclick(event)' id="Cell 2" class="b_Bottom "></td>
+                    <td onclick='tdclick(event)' id="Cell 3" class="b_Bottom b_Left"></td>
+                </tr>
+                <tr>
+                    <td onclick='tdclick(event)' id="Cell 4" class="b_Right"> </td>
+                    <td onclick='tdclick(event)' id="Cell 5" class=""></td>
+                    <td onclick='tdclick(event)' id="Cell 6" class="b_Left"></td>
+                </tr>
+                <tr>
+                    <td onclick='tdclick(event)' id="Cell 7" class="b_Top b_Right"></td>
+                    <td onclick='tdclick(event)' id="Cell 8" class="b_Top "></td>
+                    <td onclick='tdclick(event)' id="Cell 9" class="b_Top b_Left"></td>
+                </tr>
+            </table>
+        </div>
+        <div class="credit">
+            <div class="content">
+                <div class="content__container">
+                  <p class="content__container__text">
+                    Created By : 
+                  </p>
+                  
+                  <ul class="content__container__list">
+                    <li class="content__container__list__item">Achraf .....</li>
+                    <li class="content__container__list__item">Liela ......</li>
+                    <li class="content__container__list__item">Khadija ....</li>
+                    <li class="content__container__list__item">Soufian ....</li>
+                  </ul>
+                </div>
+              </div>
+        </div>
+            <!-- <img src="win_1.png" class="win" alt=""> -->
+            <script>
+                var isPlayer1 = true;
+                var isFinished = false;
+
+                var moveCount = 0;
+
+                cells = [0,0,0,
+                         0,0,0,
+                         0,0,0]
+
+                function refresh(e){
+                    window.location.reload();
+                } ;
+                function tdclick(e){ 
+                    if(isFinished){
+                        return;
+                    }
+                    console.log(e.target.id);
+                    var target = document.getElementById(e.target.id);
+                    var index = parseInt( e.target.id.substr(-1) )-1;
+                    console.log(index);
+                    if(cells[index] == 0){
+                        moveCount++;
+                        var img = document.createElement( "img" );
+
+                        if(isPlayer1){
+                            img.src = "X.png";
+                            isPlayer1 = false;
+                            cells[index] = 2;
+                            img.className = "pop";
+                        }else{
+                            img.src = "O.png";
+                            img.className = "pop";
+                            isPlayer1 = true;
+                            cells[index] = 1;
+                        }
+                        target.appendChild(img);
+                        chekcing();
+                    }
+                    if(moveCount >= 9){
+                        Even();
+
+                    }
+                };  
+                function addWinningCheck(indx,an=""){
+                    var target = document.getElementById("Container");
+                    var img = document.createElement( "img" );
+                    img.src = "win_"+indx+".png";
+                    console.log(img);
+                    img.className="win pa"+an;
+                    target.appendChild(img);
+                };
+                function chekcing(){
+                    // checking O
+                    if(cells[0] == 1 && cells[1] == 1 && cells[2] == 1){
+                        O_Win();
+                        addWinningCheck(1,"H");
+                    }else if(cells[3] == 1 && cells[4] == 1 && cells[5] == 1){
+                        O_Win();
+                        addWinningCheck(2,"H");
+
+                    
+                    }else if(cells[6] == 1 && cells[7] == 1 && cells[8] == 1){
+                        
+                        O_Win();
+                        addWinningCheck(3,"H");
+                    
+                    }else if(cells[0] == 1 && cells[3] == 1 && cells[6] == 1){
+
+                        O_Win();
+                        addWinningCheck(4,"V");
+                    
+                    }else if(cells[1] == 1 && cells[4] == 1 && cells[7] == 1){
+
+                        O_Win();
+                        addWinningCheck(5,"V");
+                    
+                    }else if(cells[2] == 1 && cells[5] == 1 && cells[8] == 1){
+
+                        O_Win();
+                        addWinningCheck(6,"V");
+                    
+                    }else if(cells[0] == 1 && cells[4] == 1 && cells[8] == 1){
+
+                        O_Win();
+                        addWinningCheck(7);
+                    
+                    }else if(cells[2] == 1 && cells[4] == 1 && cells[6] == 1){
+                        
+                        O_Win();
+                        addWinningCheck(8);
+
+                    // Checking X
+                    }else if(cells[0] == 2 && cells[1] == 2 && cells[2] == 2){
+                        X_Win();
+                        
+                        addWinningCheck(1,"H");
+
+                    }else if(cells[3] == 2 && cells[4] == 2 && cells[5] == 2){
+                        X_Win();
+                        addWinningCheck(2,"H");
+
+
+                    }else if(cells[6] == 2 && cells[7] == 2 && cells[8] == 2){
+                        X_Win();
+                        addWinningCheck(3,"H");
+
+
+                    }else if(cells[0] == 2 && cells[3] == 2 && cells[6] == 2){
+                        X_Win();
+                        addWinningCheck(4,"V");
+
+
+                    }else if(cells[1] == 2 && cells[4] == 2 && cells[7] == 2){
+                        X_Win();
+                        addWinningCheck(5,"V");
+
+
+                    }else if(cells[2] == 2 && cells[5] == 2 && cells[8] == 2){
+
+                        X_Win();
+                        addWinningCheck(6,"V");
+
+                    }else if(cells[0] == 2 && cells[4] == 2 && cells[8] == 2){
+                        
+                        X_Win();
+                        addWinningCheck(7);
+
+                    }else if(cells[2] == 2 && cells[4] == 2 && cells[6] == 2){
+                        X_Win();
+                        addWinningCheck(8);
+                        
+                    }
+                };
+
+                function X_Win(){
+                    console.log("X win");
+                    isFinished = true;
+                };
+                function O_Win(){
+                    console.log("O lose");
+                    isFinished = true;
+
+                };
+                function Even(){
+                    console.log("Even");
+                    isFinished = true;
+
+                };
+            </script>
+    </body>
+</html>
